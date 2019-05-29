@@ -19,9 +19,6 @@ package cn.hd.core.dencoder;
 import cn.hd.core.converter.Converter;
 import org.bytedeco.javacpp.opencv_core;
 
-/**
- * @author ww23
- */
 public class TextEncoder extends Encoder {
 
     public TextEncoder(Converter converter) {

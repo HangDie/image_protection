@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>上传图片</title>
     <link rel="stylesheet" href="./vendor/simple-line-icons/css/simple-line-icons.css">
@@ -24,8 +23,7 @@
 
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img src="./imgs/avatar-1.png" class="avatar avatar-sm" alt="logo">
                         <span class="small ml-1 d-md-down-none">Admin</span>
                     </a>
@@ -59,13 +57,13 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="forms.html" class="nav-link active">
+                        <a href="forms.html" class="nav-link">
                             <i class="icon icon-puzzle"></i> 版权检测
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="watermark.html" class="nav-link">
+                        <a href="watermark.html" class="nav-link active">
                             <i class="icon icon-puzzle"></i> 使用者信息提取
                         </a>
                     </li>
@@ -79,13 +77,13 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header bg-light">
-                                监测信息
+                                待提取信息
                             </div>
 
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <label for="upload-file" class="form-control-label">请上传需要检测的图片</label>
+                                        <label for="upload-file" class="form-control-label">请上传作品</label>
                                         <input id="upload-file" type="file" name="files" hidden> <br/>
                                         <button class="btn-lg btn-primary" id="btn-upload">上传</button>
                                     </div>
@@ -95,24 +93,21 @@
                                 </div>
                                 <div class="row" id="div-save">
                                     <div class="col-md-4">
-                                        <button class="btn-lg btn-light" id="btn-save">检测</button>
+                                        <button class="btn-lg btn-light" id="btn-save">提取</button>
                                     </div>
                                 </div>
                             </div>
-
+                        </div>
+                        <div class="card">
                             <div class="card-header bg-light">
-                                检测结果
+                                提取结果
                             </div>
+
                             <div class="card-body">
-                                <table class="table table-hover" id="dataTable">
-                                    <thead>
-                                        <td>序号</td>
-                                        <td>作品名</td>
-                                        <td>作者</td>
-                                        <td>作品</td>
-                                        <td>上传时间</td>
-                                    </thead>
-                                </table>
+                                <div class="row">
+                                    <div class="col-md-8" id="watermark-show">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -139,32 +134,26 @@
         $('#upload-file').click();
     });
     $('#upload-file').fileupload({
-        url: '/image/file/upload',
-        dataType: 'json',
-        done: function (e, data) {
+        url : '/image/file/upload',
+        dataType : 'json',
+        done : function (e, data) {
             var obj = data.result.data;
-            $('#img-show').append('<img src="http://' + obj.fileUrl + '" style="max-width: 300px;"/>');
+            $('#img-show').append('<img src="http://'+ obj.fileUrl +'" style="max-width: 300px;"/>');
             $('#fileId').val(obj.fileId);
             $('#div-save').show();
         }
     });
     $('#btn-save').on('click', function () {
         $.ajax({
-            type: 'post',
-            url: '/image/photo/check',
-            data: JSON.stringify({
-                "fileId": $('#fileId').val()
+            type : 'post',
+            url : '/image/photo/getWatermark',
+            data : JSON.stringify({
+                "fileId" : $('#fileId').val()
             }),
-            dataType: 'json',
-            contentType: 'application/json;charset=utf-8',
-            success: function (data) {
-                var list = data.data;
-                if (list.length > 0) {
-                    $(list).each(function (idx, item) {
-                        $('#dataTable').append('<tr><td>' + (idx + 1) + '</td><td>' + item.photoName + '</td><td>' + item.userId + '</td>' +
-                            '<td><img src="http://' + item.fileUrl + '" style="max-width: 300px;" /></td><td>' + item.createTime + '</td></tr>')
-                    });
-                }
+            dataType : 'json',
+            contentType : 'application/json;charset=utf-8',
+            success : function (data) {
+                $('#watermark-show').append('<img src="http://'+ data.data.fileUrl +'" style="max-width: 300px;"/>');
             }
         })
     });

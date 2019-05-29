@@ -42,9 +42,6 @@ import static org.bytedeco.javacpp.opencv_imgproc.CV_FONT_HERSHEY_COMPLEX;
 import static org.bytedeco.javacpp.opencv_imgproc.putText;
 
 
-/**
- * @author ww23
- */
 public class DftConverter implements Converter {
 
     @Override

@@ -22,9 +22,6 @@ import cn.hd.core.util.Utils;
 import static org.bytedeco.javacpp.opencv_core.CV_8U;
 import static org.bytedeco.javacpp.opencv_imgcodecs.imwrite;
 
-/**
- * @author ww23
- */
 public class Decoder {
 
     private Converter converter;

@@ -37,12 +37,12 @@ public class BlindWatermark {
 
         if (args.length < 4) {
             // Encoder
-            Converter converter = new DftConverter();
-            Encoder encoder = new TextEncoder(converter);
-            encoder.encode(ROOT_PATH + "gakki-src.png", "test", ROOT_PATH + "DCT-TEST.png");
+            Converter converter = new DctConverter();
+//            Encoder encoder = new TextEncoder(converter);
+//            encoder.encode(ROOT_PATH + "jmu.png", "u HangDie ip 0.0.0.0", ROOT_PATH + "DCT-TEST.png");
             // Decoder
             Decoder decoder = new Decoder(converter);
-            decoder.decode(ROOT_PATH + "DCT-TEST.png", ROOT_PATH + "Watermark.png");
+            decoder.decode(ROOT_PATH + "DCT-TEST-1.png", ROOT_PATH + "1-Watermark.png");
             return;
         }
 

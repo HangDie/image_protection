@@ -64,6 +64,11 @@
             <artifactId>javacv-platform</artifactId>
             <version>1.5</version>
         </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.5</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.bytedeco/javacpp -->
         <!--<dependency>-->
         <!--<groupId>org.bytedeco</groupId>-->

@@ -34,9 +34,7 @@ import static org.bytedeco.javacpp.opencv_imgproc.putText;
 import static org.bytedeco.javacpp.opencv_imgproc.CV_FONT_HERSHEY_COMPLEX;
 import static org.bytedeco.javacpp.opencv_imgproc.COLOR_RGB2HSV;
 
-/**
- * @author ww23
- */
+
 public class DctConverter implements Converter {
 
     @Override

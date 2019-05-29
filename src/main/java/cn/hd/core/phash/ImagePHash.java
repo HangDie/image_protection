@@ -9,12 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import javax.imageio.ImageIO;
-/*
- * function: 用汉明距离进行图片相似度检测的Java实现
- * pHash-like image hash.
- * Author: Sun Huaqiang
- * Based On: http://www.hackerfactor.com/blog/index.php?/archives/432-Looks-Like-It.html
- */
+
 public class ImagePHash {
 
     private int size = 32;
@@ -31,7 +26,7 @@ public class ImagePHash {
         initCoefficients();
     }
 
-    private int distance(String s1, String s2) {
+    public int distance(String s1, String s2) {
         int counter = 0;
         for (int k = 0; k < s1.length();k++) {
             if(s1.charAt(k) != s2.charAt(k)) {
@@ -41,19 +36,11 @@ public class ImagePHash {
         return counter;
     }
 
-    // Returns a 'binary string' (like. 001010111011100010) which is easy to do a hamming distance on.
     private String getHash(InputStream is) throws Exception {
         BufferedImage img = ImageIO.read(is);
 
-/* 1. Reduce size(缩小尺寸).
-Like Average Hash, pHash starts with a small image.
-However, the image is larger than 8x8; 32x32 is a good size.This is really done to simplify the DCT computation and not because it is needed to reduce the high frequencies.
-*/
         img = resize(img, size, size);
 
-/* 2. Reduce color(简化色彩).
-The image is reduced to a grayscale just to further simplify the number of computations.
-*/
         img = grayscale(img);
 
         double[][] vals = new double[size][size];
@@ -64,19 +51,9 @@ The image is reduced to a grayscale just to further simplify the number of compu
             }
         }
 
-/* 3. Compute the DCT(计算DCT).
-The DCT(Discrete Cosine Transform,离散余弦转换) separates the image into a collection of frequencies and scalars. While JPEG uses an 8x8 DCT, this algorithm uses a 32x32 DCT.
-*/
         long start = System.currentTimeMillis();
         double[][] dctVals = applyDCT(vals);
-//        System.out.println("DCT_COST_TIME: " + (System.currentTimeMillis() - start));
 
-/* 4. Reduce the DCT.
-This is the magic step. While the DCT is 32x32, just keep the top-left 8x8. Those represent the lowest frequencies in the picture.
-*/
-/* 5. Compute the average value.
-Like the Average Hash, compute the mean DCT value (using only the 8x8 DCT low-frequency values and excluding the first term since the DC coefficient can be significantly different from the other values and will throw off the average).
-*/
         double total = 0;
 
         for (int x = 0; x < smallerSize; x++) {
@@ -88,13 +65,6 @@ Like the Average Hash, compute the mean DCT value (using only the 8x8 DCT low-fr
 
         double avg = total / (double) ((smallerSize * smallerSize) - 1);
 
-/* 6. Further reduce the DCT.
-This is the magic step. Set the 64 hash bits to 0 or 1
-depending on whether each of the 64 DCT values is above or below the average value. The result doesn't tell us the
-actual low frequencies; it just tells us the very-rough
-relative scale of the frequencies to the mean. The result
-will not vary as long as the overall structure of the image remains the same; this can survive gamma and color histogram adjustments without a problem.
-*/
         String hash = "";
 
         for (int x = 0; x < smallerSize; x++) {
@@ -126,8 +96,6 @@ will not vary as long as the overall structure of the image remains the same; th
     private static int getBlue(BufferedImage img, int x, int y) {
         return (img.getRGB(x, y)) & 0xff;
     }
-
-// DCT function stolen from http://stackoverflow.com/questions/4240490/problems-with-dct-and-idct-algorithm-in-java
 
     private double[] c;
     private void initCoefficients() {

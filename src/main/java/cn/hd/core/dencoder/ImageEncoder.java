@@ -23,9 +23,6 @@ import org.bytedeco.javacpp.opencv_core.Mat;
 
 import static org.bytedeco.javacpp.opencv_core.CV_8U;
 
-/**
- * @author ww23
- */
 public class ImageEncoder extends Encoder {
 
     public ImageEncoder(Converter converter) {
